@@ -9,3 +9,11 @@ router.get("/", async(req , res , next) =>{
     }
 })
 
+router.get("/:id", async(req,res,next)=>{
+    try{
+        const id = req.params.id
+        const poll = polls.findByPk(id, {include:options})
+    }catch(err){
+    next(err)
+    }
+})
