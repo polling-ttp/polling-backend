@@ -1,0 +1,62 @@
+const db = require('../db')
+const {Option, Vote, Poll} = require('./models')
+
+const createfavColorPoll = () => {
+    return Poll.create({
+        title: "Favorite Color",
+        description: "What's your favorite color"
+    })
+}
+
+const createColorOptions = (favColor) =>{
+    return Option.bulkCreate([
+        {text: "Red", pollId: favColor.id},
+        {text: "Blue", pollId: favColor.id},
+        {text: "Green", pollId: favColor.id}
+    ])
+}
+
+const createColorVotes = (colorOptions) => {
+  return Vote.bulkCreate([
+    { optionId: colorOptions[0].id }, // Red
+    { optionId: colorOptions[0].id }, // Red
+    { optionId: colorOptions[1].id }, // Blue
+    { optionId: colorOptions[2].id }, // Green
+  ]);
+};
+
+
+const createSeasonPoll = () => {
+  return Poll.create({
+    title: "Best Season",
+    description: "Which season do you like most?",
+  });
+};
+
+const createSeasonOptions = (bestSeason) => {
+  return Option.bulkCreate([
+    { text: "Summer", pollId: bestSeason.id },
+    { text: "Winter", pollId: bestSeason.id },
+  ]);
+};
+
+const createSeasonVotes = (seasonOptions) => {
+  return Vote.bulkCreate([
+    { optionId: seasonOptions[0].id },
+    { optionId: seasonOptions[0].id },
+    { optionId: seasonOptions[1].id }
+  ])
+}
+
+function seed() {
+  db.sync({ force: true })
+    .then(createFavColorPoll)
+    .then(createColorOptions)
+    .then(createColorVotes)
+    .then(createSeasonPoll)
+    .then(createSeasonOptions)
+    .then(createSeasonVotes)
+    console.log("Seed successful")
+}
+
+seed();
