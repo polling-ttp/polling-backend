@@ -1,7 +1,9 @@
-router.post("/", async(req,res,next) =>{
-    try{
+const router = require("express").Router();
+const { poll, options, votes } = require("../models");
 
-    }catch(err){
-        next(err)
-    }
-})
+router.post("/", async (req, res, next) => {
+  try {
+  } catch (err) {
+    next(err);
+  }
+});

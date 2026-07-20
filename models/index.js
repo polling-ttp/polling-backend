@@ -1,6 +1,6 @@
-const Option = require('./options')
+const Option = require('./option')
 const Poll = require('./poll')
-const Vote = require('./votes')
+const Vote = require('./vote')
 const db = require('../db')
 
 Poll.hasMany(Option, {foreignkey: "pollId", as: "options", onDelete: 'CASCADE'})
