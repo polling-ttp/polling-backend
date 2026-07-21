@@ -1,12 +1,12 @@
 const express = require("express");
 const cors = require("cors");
-const app = express();
 const { db } = require("./models");
-const poll = require("./routes/Polls");
-const options = require("./routes/options");
+const router = require("./routes");
 
+const app = express();
 app.use(express.json());
 app.use(cors());
+app.use("/api", router);
 
 const PORT = 8000;
 

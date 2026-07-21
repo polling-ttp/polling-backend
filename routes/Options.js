@@ -1,9 +1,11 @@
-const router = require("express").Router();
-const { poll, options, votes } = require("../models");
+const optionRouter = require("express").Router();
+const { Poll, Option, Vote } = require("../models");
 
-router.post("/", async (req, res, next) => {
+optionRouter.post("/", async (req, res, next) => {
   try {
   } catch (err) {
     next(err);
   }
 });
+
+module.exports = optionRouter;

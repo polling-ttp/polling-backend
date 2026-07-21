@@ -1,12 +1,12 @@
-const router = require("express").Router();
-const { poll, options, votes } = require("../models");
+const voteRouter = require("express").Router();
+const { Poll, Option, Vote } = require("../models");
 
-router.post("/", async(req,res,next) =>{
-    try{
-        const vote = votes.create()
-    }catch(err){
-        next(err)
-    }
-})
+voteRouter.post("/", async (req, res, next) => {
+  try {
+    const vote = Vote.create();
+  } catch (err) {
+    next(err);
+  }
+});
 
-module.exports = Votes ;
+module.exports = voteRouter;

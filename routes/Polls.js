@@ -1,7 +1,7 @@
-const router = require("express").Router();
-const { poll, option, vote } = require("../models");
+const pollRouter = require("express").Router();
+const { Poll, Option, Vote } = require("../models");
 
-router.get("/", async (req, res, next) => {
+pollRouter.get("/", async (req, res, next) => {
   try {
     const polls = await Polls.findAll();
   } catch (err) {
@@ -9,28 +9,27 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.get("/:id", async (req, res, next) => {
+pollRouter.get("/:id", async (req, res, next) => {
   try {
     const id = req.params.id;
-    const poll = await poll.findByPk(id, {include: option});
+    const poll = await poll.findByPk(id, { include: option });
   } catch (err) {
     next(err);
   }
 });
 
-router.post("/", async (req, res, next) => {
+pollRouter.post("/", async (req, res, next) => {
   try {
-    const post = await post.create(req.body)
+    const post = await post.create(req.body);
   } catch (err) {
     next(err);
   }
 });
-router.post("/:id/option", async (req, res, next) => {
+pollRouter.post("/:id/option", async (req, res, next) => {
   try {
   } catch (err) {
     next(err);
   }
 });
 
-
-module.exports = polls;
+module.exports = pollRouter;
