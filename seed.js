@@ -1,4 +1,4 @@
-const db = require('../db')
+const db = require('./db')
 const {Option, Vote, Poll} = require('./models')
 
 const createfavColorPoll = () => {
@@ -48,9 +48,9 @@ const createSeasonVotes = (seasonOptions) => {
   ])
 }
 
-function seed() {
-  db.sync({ force: true })
-    .then(createFavColorPoll)
+async function seed() {
+  await db.sync({ force: true })
+    .then(createfavColorPoll)
     .then(createColorOptions)
     .then(createColorVotes)
     .then(createSeasonPoll)

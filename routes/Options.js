@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { poll, options, votes } = require("../models");
+const { Poll, Option, Vote } = require("../models");
 
 router.post("/", async (req, res, next) => {
   try {
@@ -7,3 +7,5 @@ router.post("/", async (req, res, next) => {
     next(err);
   }
 });
+
+module.exports = router;
