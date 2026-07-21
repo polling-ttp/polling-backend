@@ -1,12 +1,18 @@
-const Option = require('./option')
-const Poll = require('./poll')
-const Vote = require('./vote')
-const db = require('../db')
+const Option = require("./option");
+const Poll = require("./poll");
+const Vote = require("./vote");
+const db = require("../db");
 
-Poll.hasMany(Option, {foreignkey: "pollId", as: "options", onDelete: 'CASCADE'})
-Option.belongsTo(Poll, {foreignkey: "pollId", as: "poll"})
+Poll.hasMany(Option, {
+  foreignKey: "pollId",
+  onDelete: "CASCADE",
+});
+Option.belongsTo(Poll, { foreignkey: "pollId", as: "poll" });
 
-Option.hasMany(Vote, { foreignKey: 'optionId', as: 'votes', onDelete: 'CASCADE' })
-Vote.belongsTo(Option, { foreignKey: 'optionId', as: 'option' })
+Option.hasMany(Vote, {
+  foreignKey: "optionId",
+  onDelete: "CASCADE",
+});
+Vote.belongsTo(Option, { foreignKey: "optionId" });
 
-module.exports = { db, Option, Poll, Vote}
+module.exports = { db, Option, Poll, Vote };
