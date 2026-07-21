@@ -1,34 +1,60 @@
 const pollRouter = require("express").Router();
 const { Poll, Option, Vote } = require("../models");
 
+// get all posts
 pollRouter.get("/", async (req, res, next) => {
   try {
-    const polls = await Polls.findAll();
+    const polls = await Poll.findAll();
+    res.status(200).json(polls);
   } catch (err) {
     next(err);
   }
 });
 
+// get a single post
 pollRouter.get("/:id", async (req, res, next) => {
   try {
-    const id = req.params.id;
-    const poll = await poll.findByPk(id, { include: option });
+    const id = Number(req.params.id);
+    const poll = await Poll.findByPk(id, { include: Option });
+    if (!poll) return res.status(404).json({ message: `Poll Not Found.` });
+    res.status(200).json(poll);
   } catch (err) {
     next(err);
   }
 });
 
+// create a poll
 pollRouter.post("/", async (req, res, next) => {
   try {
-    const post = await post.create(req.body);
+    const post = await Poll.create(req.body);
+    res.status(201).json(post);
   } catch (err) {
     next(err);
   }
 });
-pollRouter.post("/:id/option", async (req, res, next) => {
+
+// update a poll
+pollRouter.patch("/:id", async (req, res, next) => {
   try {
-  } catch (err) {
-    next(err);
+    const id = Number(req.params.id);
+    const poll = await Poll.findByPk(id);
+    if (!poll) return res.status(404).json({ message: `Poll Not Found.` });
+    await poll.update(req.body);
+    res.status(200).json(poll);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// delete a poll
+pollRouter.delete("/:id", async (req, res, next) => {
+  try {
+    const poll = await Poll.findByPk(Number(req.params.id));
+    if (!poll) return res.status(404).json({ message: `Poll Not Found.` });
+    await poll.destroy();
+    return res.sendStatus(204);
+  } catch (error) {
+    next(error);
   }
 });
 
