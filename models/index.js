@@ -3,16 +3,14 @@ const Poll = require("./poll");
 const Vote = require("./vote");
 const db = require("../db");
 
-Poll.hasMany(Option, {
-  foreignKey: "pollId",
+Poll.hasMany(Option, {  
   onDelete: "CASCADE",
 });
-Option.belongsTo(Poll, { foreignkey: "pollId", as: "poll" });
+Option.belongsTo(Poll);
 
 Option.hasMany(Vote, {
-  foreignKey: "optionId",
   onDelete: "CASCADE",
 });
-Vote.belongsTo(Option, { foreignKey: "optionId" });
+Vote.belongsTo(Option);
 
 module.exports = { db, Option, Poll, Vote };

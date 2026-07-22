@@ -11,7 +11,7 @@ pollRouter.get("/", async (req, res, next) => {
   }
 });
 
-// get a single post
+// // get a single post
 pollRouter.get("/:id", async (req, res, next) => {
   try {
     const id = Number(req.params.id);
@@ -25,35 +25,43 @@ pollRouter.get("/:id", async (req, res, next) => {
 
 // create a poll
 pollRouter.post("/", async (req, res, next) => {
+  const { poll, options } = req.body;
+
   try {
-    const post = await Poll.create(req.body);
-    res.status(201).json(post);
+    const post = await Poll.create(poll);
+
+    const listOpt = options.map(async (option) => (
+      await Option.create({text: option, PollId: post.id})
+    ));
+    res.status(201).json({...post.toJSON()})  
+  } catch (err) {
+    next(err);
+  }
+});
+
+
+
+pollRouter.post("/:id/vote", async (req, res, next) => {
+  const vote = Number(req.params.id);
+  try {
+    const castVote = await Vote.create({ vote });
+    if (!option) return res.status(404).json({ message: "Option not found." });
+    res.status(201).json(castVote);
   } catch (err) {
     next(err);
   }
 });
 
 // update a poll
-pollRouter.patch("/:id", async (req, res, next) => {
-  try {
-    const id = Number(req.params.id);
-    const poll = await Poll.findByPk(id);
-    if (!poll) return res.status(404).json({ message: `Poll Not Found.` });
-    await poll.update(req.body);
-    res.status(200).json(poll);
-  } catch (error) {
-    next(error);
-  }
-});
 
 // delete a poll
 pollRouter.delete("/:id", async (req, res, next) => {
+  console.log("======>>cat food")
   try {
-    const poll = await Poll.findByPk(Number(req.params.id));
-    if (!poll) return res.status(404).json({ message: `Poll Not Found.` });
-    await poll.destroy();
-    return res.sendStatus(204);
+    await Poll.destroy( {where: {id: req.params.id}});
+    return res.status(204).send("delete worked");
   } catch (error) {
+    // console.log(error.message) .
     next(error);
   }
 });
