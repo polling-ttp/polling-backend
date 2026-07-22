@@ -35,8 +35,8 @@ const createSeasonPoll = () => {
 
 const createSeasonOptions = (bestSeason) => {
   return Option.bulkCreate([
-    { text: "Summer", pollId: bestSeason.id },
-    { text: "Winter", pollId: bestSeason.id },
+    { text: "Summer", PollId: bestSeason.id },
+    { text: "Winter", PollId: bestSeason.id },
   ]);
 };
 
@@ -50,7 +50,7 @@ const createSeasonVotes = (seasonOptions) => {
 
 function seed() {
   db.sync({ force: true })
-    .then(createFavColorPoll)
+    .then(createfavColorPoll)
     .then(createColorOptions)
     .then(createColorVotes)
     .then(createSeasonPoll)
