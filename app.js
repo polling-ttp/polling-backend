@@ -21,7 +21,7 @@ async function logger(req, res, next) {
 app.use(logger)
 app.use(["/polls", "/Polls"], pollrouter)
 async function startApp() {
-  await db.sync();
+  await db.sync({force: true});
   app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 }
 startApp();
