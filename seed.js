@@ -34,8 +34,8 @@ const createSeasonPoll = () => {
 
 const createSeasonOptions = (bestSeason) => {
   return Option.bulkCreate([
-    { text: "Summer", pollId: bestSeason.id },
-    { text: "Winter", pollId: bestSeason.id },
+    { text: "Summer", PollId: bestSeason.id },
+    { text: "Winter", PollId: bestSeason.id },
   ]);
 };
 
