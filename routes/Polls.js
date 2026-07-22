@@ -29,15 +29,18 @@ pollRouter.post("/", async (req, res, next) => {
 
   try {
     const post = await Poll.create(poll);
-    const listOpt = options.map((option) => ({
-      text: option,
-    }));
-    const newOption = await Option.bulkCreate(listOpt);
-    res.status(201).json({ ...post.toJSON(), options: newOption });
+
+    const listOpt = options.map(async (option) => (
+      await Option.create({text: option, PollId: post.id})
+    ));
+    res.status(201).json({...post.toJSON()})  
   } catch (err) {
     next(err);
   }
 });
+
+
+
 pollRouter.post("/:id/vote", async (req, res, next) => {
   const vote = Number(req.params.id);
   try {
