@@ -11,11 +11,17 @@ pollRouter.get("/", async (req, res, next) => {
   }
 });
 
-// // get a single post
 pollRouter.get("/:id", async (req, res, next) => {
   try {
     const id = Number(req.params.id);
-    const poll = await Poll.findByPk(id, { include: Option });
+    const poll = await Poll.findByPk(id, {
+      include: [
+        {
+          model: Option,
+          include: [Vote], // ← also include the votes for each option
+        },
+      ],
+    });
     if (!poll) return res.status(404).json({ message: `Poll Not Found.` });
     res.status(200).json(poll);
   } catch (err) {
@@ -25,21 +31,30 @@ pollRouter.get("/:id", async (req, res, next) => {
 
 // create a poll
 pollRouter.post("/", async (req, res, next) => {
-  const { poll, options } = req.body;
+  const { title, description, options } = req.body;
 
   try {
-    const post = await Poll.create(poll);
+    const post = await Poll.create({
+      title,
+      description,
+    });
 
-    const listOpt = options.map(async (option) => (
-      await Option.create({text: option, PollId: post.id})
-    ));
-    res.status(201).json({...post.toJSON()})  
+    // const listOpt = options.map(
+    //   async (option) => await Option.create({ text: option, PollId: post.id }),
+    // );
+
+    const listOpt = await Option.bulkCreate(
+      options.map((option) => ({
+        text: option.text,
+        PollId: post.id,
+      })),
+    );
+
+    res.status(201).json({ ...post.toJSON(), options: listOpt });
   } catch (err) {
     next(err);
   }
 });
-
-
 
 pollRouter.post("/:id/vote", async (req, res, next) => {
   const vote = Number(req.params.id);
@@ -53,12 +68,22 @@ pollRouter.post("/:id/vote", async (req, res, next) => {
 });
 
 // update a poll
+pollRouter.patch("/:id", async (req, res, next) => {
+  try {
+    const id = Number(req.params.id);
+    const poll = await Poll.findByPk(id);
+    if (!poll) return res.status(404).json({ message: `Poll Not Found.` });
+    await poll.update(req.body);
+    res.status(200).json(poll);
+  } catch (error) {
+    next(error);
+  }
+});
 
 // delete a poll
 pollRouter.delete("/:id", async (req, res, next) => {
-  console.log("======>>cat food")
   try {
-    await Poll.destroy( {where: {id: req.params.id}});
+    await Poll.destroy({ where: { id: req.params.id } });
     return res.status(204).send("delete worked");
   } catch (error) {
     // console.log(error.message) .

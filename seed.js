@@ -10,9 +10,9 @@ const createFavColorPoll = () => {
 
 const createColorOptions = (favColor) => {
   return Option.bulkCreate([
-    { text: "Red", pollId: favColor.id },
-    { text: "Blue", pollId: favColor.id },
-    { text: "Green", pollId: favColor.id },
+    { text: "Red", PollId: favColor.id },
+    { text: "Blue", PollId: favColor.id },
+    { text: "Green", PollId: favColor.id },
   ]);
 };
 
@@ -34,8 +34,8 @@ const createSeasonPoll = () => {
 
 const createSeasonOptions = (bestSeason) => {
   return Option.bulkCreate([
-    { text: "Summer", pollId: bestSeason.id },
-    { text: "Winter", pollId: bestSeason.id },
+    { text: "Summer", PollId: bestSeason.id },
+    { text: "Winter", PollId: bestSeason.id },
   ]);
 };
 
